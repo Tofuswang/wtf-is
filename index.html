@@ -422,9 +422,35 @@ body::after {
 
 @media (max-width: 520px) {
   .speed-glass { padding: 24px 16px 20px; }
-  .bar-label { width: 72px; font-size: 12px; }
-  .bar-fill { font-size: 11px; padding-right: 8px; }
-  .bar-row { gap: 8px; }
+  .bar-chart { gap: 10px; }
+  .bar-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  .bar-label {
+    width: auto;
+    text-align: left;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .bar-label small {
+    display: inline;
+    margin-top: 0;
+  }
+  .bar-track { height: 32px; }
+  .bar-fill { font-size: 12px; padding-right: 10px; }
+  /* mobile: remove min-width so short bars stay visually short */
+  .bar-fill.speed-api,
+  .bar-fill.speed-cli,
+  .bar-fill.speed-mcp,
+  .bar-fill.speed-skills {
+    min-width: 48px;
+  }
+  .speed-punchline { font-size: 13px; }
+  .speed-punchline .multiplier { font-size: 18px; }
 }
 
 /* ===== Key Insights Section ===== */
