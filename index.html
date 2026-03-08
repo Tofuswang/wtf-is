@@ -295,20 +295,10 @@ body::after {
 .card.skills { --card-accent: rgba(251,146,60,0.4); --card-glow: rgba(251,146,60,0.1); }
 .card.skills .icon { background: rgba(251,146,60,0.12); border: 1px solid rgba(251,146,60,0.15); }
 
-/* ===== Uber Speed Comparison ===== */
+/* ===== Uber Speed Comparison — Bar Chart ===== */
 .speed-section {
-  margin: 20px auto 20px;
+  margin: 24px auto 24px;
   max-width: 1080px;
-}
-
-.speed-title {
-  text-align: center;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 16px;
 }
 
 .speed-glass {
@@ -319,6 +309,7 @@ body::after {
   -webkit-backdrop-filter: blur(24px);
   overflow: hidden;
   position: relative;
+  padding: 32px 32px 28px;
 }
 .speed-glass::before {
   content: '';
@@ -328,47 +319,112 @@ body::after {
   background: linear-gradient(90deg, transparent, rgba(192,132,252,0.4), rgba(244,114,182,0.4), transparent);
 }
 
-.uber-row {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0;
-}
-
-@media (max-width: 768px) {
-  .uber-row { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 520px) {
-  .uber-row { grid-template-columns: repeat(2, 1fr); }
-}
-
-.uber-cell {
-  padding: 24px 16px;
+.speed-header {
   text-align: center;
-  border-right: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 28px;
+}
+.speed-header h3 {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.speed-header p {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.bar-chart {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  transition: background 0.2s;
+  gap: 14px;
 }
-.uber-cell:last-child { border-right: none; }
-.uber-cell:hover { background: rgba(255,255,255,0.03); }
 
-.uber-cell .u-label {
-  font-size: 11px;
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-label {
+  width: 100px;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  color: var(--text-secondary);
 }
-.uber-cell .u-time {
-  font-size: 28px;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-}
-.uber-cell .u-desc {
+.bar-label small {
+  display: block;
   font-size: 11px;
+  font-weight: 500;
   color: var(--text-dim);
+  margin-top: 1px;
+}
+
+.bar-track {
+  flex: 1;
+  height: 36px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  color: white;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: fit-content;
+  position: relative;
+}
+
+/* Bar widths proportional to time: API=3s, CLI=5s, MCP=5s, Skills=5s, BrowserUse=75s, GUI=180s */
+/* Scale: GUI(180s)=100% */
+.bar-fill.speed-api     { width: 4%;  background: linear-gradient(90deg, rgba(34,197,94,0.7), rgba(34,197,94,0.4)); min-width: 60px; }
+.bar-fill.speed-cli     { width: 5%;  background: linear-gradient(90deg, rgba(251,191,36,0.7), rgba(251,191,36,0.4)); min-width: 60px; }
+.bar-fill.speed-mcp     { width: 5%;  background: linear-gradient(90deg, rgba(192,132,252,0.7), rgba(192,132,252,0.4)); min-width: 60px; }
+.bar-fill.speed-skills  { width: 5%;  background: linear-gradient(90deg, rgba(251,146,60,0.7), rgba(251,146,60,0.4)); min-width: 60px; }
+.bar-fill.speed-browser { width: 42%; background: linear-gradient(90deg, rgba(244,114,182,0.7), rgba(244,114,182,0.3)); }
+.bar-fill.speed-gui     { width: 100%; background: linear-gradient(90deg, rgba(96,165,250,0.6), rgba(96,165,250,0.2)); }
+
+.bar-time {
+  white-space: nowrap;
+}
+
+.speed-punchline {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.speed-punchline strong {
+  color: var(--text);
+}
+.speed-punchline .multiplier {
+  font-size: 20px;
+  font-weight: 900;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@media (max-width: 520px) {
+  .speed-glass { padding: 24px 16px 20px; }
+  .bar-label { width: 72px; font-size: 12px; }
+  .bar-fill { font-size: 11px; padding-right: 8px; }
+  .bar-row { gap: 8px; }
 }
 
 /* ===== Key Insights Section ===== */
@@ -606,41 +662,42 @@ body::after {
 
 </div>
 
-<!-- Uber Speed Comparison -->
+<!-- Uber Speed Comparison — Bar Chart -->
 <div class="speed-section">
-  <div class="speed-title">同一件事 —— Uber 叫車，速度差多少？</div>
   <div class="speed-glass">
-    <div class="uber-row">
-      <div class="uber-cell">
-        <div class="u-label">API</div>
-        <div class="u-time" style="color:#4ade80">3s</div>
-        <div class="u-desc">一行程式碼</div>
+    <div class="speed-header">
+      <h3>同一件事 —— 用 Uber 叫車</h3>
+      <p>6 種方式，速度差距一目瞭然</p>
+    </div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">API<small>一行程式碼</small></div>
+        <div class="bar-track"><div class="bar-fill speed-api"><span class="bar-time">~3s</span></div></div>
       </div>
-      <div class="uber-cell">
-        <div class="u-label">CLI</div>
-        <div class="u-time" style="color:#4ade80">5s</div>
-        <div class="u-desc">一行指令</div>
+      <div class="bar-row">
+        <div class="bar-label">CLI<small>一行指令</small></div>
+        <div class="bar-track"><div class="bar-fill speed-cli"><span class="bar-time">~5s</span></div></div>
       </div>
-      <div class="uber-cell">
-        <div class="u-label">MCP</div>
-        <div class="u-time" style="color:#4ade80">5s</div>
-        <div class="u-desc">AI 自動選工具</div>
+      <div class="bar-row">
+        <div class="bar-label">MCP<small>AI 選工具</small></div>
+        <div class="bar-track"><div class="bar-fill speed-mcp"><span class="bar-time">~5s</span></div></div>
       </div>
-      <div class="uber-cell">
-        <div class="u-label">Skills</div>
-        <div class="u-time" style="color:#4ade80">5s</div>
-        <div class="u-desc">上次學過了</div>
+      <div class="bar-row">
+        <div class="bar-label">Skills<small>學過一次</small></div>
+        <div class="bar-track"><div class="bar-fill speed-skills"><span class="bar-time">~5s</span></div></div>
       </div>
-      <div class="uber-cell">
-        <div class="u-label">Browser Use</div>
-        <div class="u-time" style="color:#fbbf24">75s</div>
-        <div class="u-desc">AI 模擬人類</div>
+      <div class="bar-row">
+        <div class="bar-label">Browser Use<small>AI 模擬人類</small></div>
+        <div class="bar-track"><div class="bar-fill speed-browser"><span class="bar-time">~75s</span></div></div>
       </div>
-      <div class="uber-cell">
-        <div class="u-label">GUI</div>
-        <div class="u-time" style="color:#f9a8d4">3m+</div>
-        <div class="u-desc">人類點點按按</div>
+      <div class="bar-row">
+        <div class="bar-label">GUI<small>人類點按</small></div>
+        <div class="bar-track"><div class="bar-fill speed-gui"><span class="bar-time">~3 min+</span></div></div>
       </div>
+    </div>
+    <div class="speed-punchline">
+      <strong>同樣是叫車，</strong>API 只要 3 秒，人類手動操作要 3 分鐘以上<br>
+      速度差距 <span class="multiplier">60 倍</span>
     </div>
   </div>
 </div>
