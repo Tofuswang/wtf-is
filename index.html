@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WTF is API, GUI, CLI, MCP, Skills?</title>
+<meta name="description" content="一篇文章看懂 AI 時代你該知道的技術名詞：API、GUI、Browser Use、CLI、MCP、Skills">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --border: #e7e5e4;
+  --text: #1c1917;
+  --text-dim: #78716c;
+  --accent: #f97316;
+  --accent-bg: #fff7ed;
+  --green: #16a34a;
+  --blue: #2563eb;
+  --red: #dc2626;
+  --purple: #7c3aed;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Inter', -apple-system, system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0a09;
+    --surface: #1c1917;
+    --border: #292524;
+    --text: #e7e5e4;
+    --text-dim: #a8a29e;
+    --accent: #fb923c;
+    --accent-bg: #1a0f00;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Hero */
+header {
+  padding: 80px 0 48px;
+  text-align: center;
+}
+
+header .badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent);
+  border-radius: 20px;
+  padding: 4px 14px;
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+
+h1 span { color: var(--accent); }
+
+header p.subtitle {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin: 0 auto 32px;
+}
+
+header .meta {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-family: var(--mono);
+}
+
+/* TOC */
+nav.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 48px;
+}
+
+nav.toc h3 {
+  font-size: 13px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+nav.toc ol {
+  list-style: none;
+  counter-reset: toc;
+}
+
+nav.toc li {
+  counter-increment: toc;
+  margin-bottom: 6px;
+}
+
+nav.toc li::before {
+  content: "0" counter(toc);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin-right: 10px;
+}
+
+nav.toc a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+nav.toc a:hover { color: var(--accent); }
+
+/* Sections */
+section {
+  margin-bottom: 56px;
+}
+
+section .section-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+h2 code {
+  font-family: var(--mono);
+  background: var(--accent-bg);
+  color: var(--accent);
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-size: 24px;
+}
+
+.section-subtitle {
+  font-size: 15px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+p {
+  margin-bottom: 16px;
+}
+
+/* Comparison cards */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+@media (max-width: 540px) {
+  .compare { grid-template-columns: 1fr; }
+}
+
+.compare .card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.compare .card.slow { border-left: 3px solid var(--red); }
+.compare .card.fast { border-left: 3px solid var(--green); }
+
+.compare .card .label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.compare .card.slow .label { color: var(--red); }
+.compare .card.fast .label { color: var(--green); }
+
+.compare .card .time {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.compare .card .desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* Code blocks */
+.codeblock {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  font-family: var(--mono);
+  font-size: 14px;
+  margin: 16px 0;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+
+.codeblock .prompt { color: var(--text-dim); }
+.codeblock .cmd { color: var(--accent); font-weight: 500; }
+
+/* Key points */
+.keypoint {
+  background: var(--accent-bg);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 20px 0;
+  font-size: 15px;
+}
+
+.keypoint strong { color: var(--accent); }
+
+/* Spectrum bar */
+.spectrum {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 24px 0;
+  text-align: center;
+}
+
+.spectrum .bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+  position: relative;
+}
+
+.spectrum .bar::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(to right, var(--green), var(--blue), var(--purple), var(--red));
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.spectrum .node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  flex: 1;
+}
+
+.spectrum .dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-bottom: 6px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+}
+
+.spectrum .node-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.spectrum .node-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* Problems list */
+.problems {
+  list-style: none;
+  margin: 16px 0;
+}
+
+.problems li {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+
+.problems .num {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--red);
+  background: #fef2f2;
+  border-radius: 6px;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .problems .num { background: #1a0505; }
+}
+
+.problems .fix {
+  color: var(--green);
+  background: #f0fdf4;
+}
+
+@media (prefers-color-scheme: dark) {
+  .problems .fix { background: #031a09; }
+}
+
+/* TLDR */
+.tldr {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  margin: 40px 0;
+}
+
+.tldr h3 {
+  font-family: var(--mono);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.tldr table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tldr th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tldr td {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tldr tr:last-child td { border-bottom: none; }
+
+.tldr .tag {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.tag.fast { background: #f0fdf4; color: var(--green); }
+.tag.mid { background: #fffbeb; color: #b45309; }
+.tag.slow { background: #fef2f2; color: var(--red); }
+
+@media (prefers-color-scheme: dark) {
+  .tag.fast { background: #031a09; }
+  .tag.mid { background: #1a1200; }
+  .tag.slow { background: #1a0505; }
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0 64px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+footer .note {
+  font-size: 12px;
+  font-family: var(--mono);
+  margin-top: 12px;
+  color: var(--text-dim);
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="badge">✈️ 寫在 Skyliner 上的筆記</div>
+    <h1>WTF is <span>API</span>, <span>GUI</span>, <span>CLI</span>, <span>MCP</span>, <span>Skills</span>?</h1>
+    <p class="subtitle">AI 時代大家都應該稍微瞭解的各種技術名詞，用 Uber 叫車一個例子講完。</p>
+    <div class="meta">by Tofus Wang · 2026.03</div>
+  </header>
+
+  <nav class="toc">
+    <h3>目錄</h3>
+    <ol>
+      <li><a href="#api">API — 讓程式呼叫另一個程式</a></li>
+      <li><a href="#gui">GUI — 包在 API 外面的好看畫面</a></li>
+      <li><a href="#browser-use">Browser Use — 讓 AI 自己操作畫面</a></li>
+      <li><a href="#cli">CLI — 介於 API 和 GUI 之間</a></li>
+      <li><a href="#mcp">MCP — 統一的工具接口標準</a></li>
+      <li><a href="#skills">Skills — 讓 AI 學會技能</a></li>
+    </ol>
+  </nav>
+
+  <!-- API -->
+  <section id="api">
+    <div class="section-label">01</div>
+    <h2><code>API</code></h2>
+    <p class="section-subtitle">Application Programming Interface — 讓程式可以呼叫另一個程式的接口</p>
+    <p>假設 Uber 開放了 API，你就可以寫一個 Python 程式碼，執行完就幫你叫車，不需要打開 App。</p>
+    <p>反過來說，Uber 的 App <strong>背後其實也是透過 API 來幫你叫車的</strong>——你按畫面上的按鈕，App 的程式碼就去呼叫 API。</p>
+    <div class="keypoint">
+      <strong>哪些服務故意不開放 API？</strong><br>
+      不想讓別人程式化使用的服務。比如搶票系統——如果開放 API，我就可以寫程式瘋狂搶票。
+    </div>
+  </section>
+
+  <!-- GUI -->
+  <section id="gui">
+    <div class="section-label">02</div>
+    <h2><code>GUI</code></h2>
+    <p class="section-subtitle">Graphical User Interface — 包在 API 外面，讓一般人可以點點按按的畫面</p>
+    <p>任何基於網路的服務都必須透過 API 來運作。為了讓所有人都能方便使用，就在 API 前面包一層好看的畫面——這就是 GUI。</p>
+    <p>所以搶票系統說「不提供 API」，嚴格來說是錯的，因為它自己的 GUI 一樣要透過 API 來送出訂票請求。真正的意思是：<strong>用各種手段讓你很難直接用它的 API。</strong></p>
+  </section>
+
+  <!-- Browser Use -->
+  <section id="browser-use">
+    <div class="section-label">03</div>
+    <h2>Browser Use</h2>
+    <p class="section-subtitle">當服務不提供 API，就讓程式自己去操作 GUI</p>
+    <p>十年前叫「爬蟲」，AI 時代叫 <strong>Browser Use</strong>——讓 AI 有自己使用瀏覽器的能力。不管某個服務有沒有 API，直接模擬人類操作網站。</p>
+    <p>這是 Manus、OpenClaw 🦞 這類 Agentic AI 的基本能力。但代價是：<strong>慢得要死。</strong></p>
+
+    <div class="compare">
+      <div class="card slow">
+        <div class="label">🐌 Browser Use 叫車</div>
+        <div class="time">~75 秒</div>
+        <div class="desc">開網站 5s → 驗證 10s → 登入 30s → 切頁面 5s → 輸入地址 15s → 叫車 3s</div>
+      </div>
+      <div class="card fast">
+        <div class="label">⚡ API 叫車</div>
+        <div class="time">~3 秒</div>
+        <div class="desc">一行程式碼，幾毫秒發送 + 系統處理 2-3 秒</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLI -->
+  <section id="cli">
+    <div class="section-label">04</div>
+    <h2><code>CLI</code></h2>
+    <p class="section-subtitle">Command Line Interface — 比 GUI 快，比寫程式呼叫 API 簡單</p>
+    <p>電影裡駭客對著黑底白字畫面輸入指令？他可能只是在用 Uber 叫車。</p>
+
+    <div class="codeblock">
+      <span class="prompt">$</span> <span class="cmd">uber ride request --from home --to airport</span>
+    </div>
+
+    <p>一行指令，搞定。全是國小英文單字，只是沒照文法排。</p>
+
+    <div class="keypoint">
+      <strong>為什麼 CLI 在 AI 時代被頻繁提到？</strong><br><br>
+      🔒 <strong>比 GUI 穩定</strong> — GUI 會改版、按鈕位置會變，CLI 指令不變就能跑<br>
+      ⚡ <strong>比 Browser Use 快</strong> — 一行指令 vs. 開瀏覽器登入點來點去<br>
+      🧠 <strong>比 API 更適合 LLM</strong> — CLI 都是自然語言單字，LLM 不容易出錯，也更省 token
+    </div>
+  </section>
+
+  <!-- Spectrum -->
+  <section>
+    <div class="spectrum">
+      <div style="font-size:13px;color:var(--text-dim);font-family:var(--mono);margin-bottom:8px;">速度 vs 易用性光譜</div>
+      <div class="bar">
+        <div class="node">
+          <div class="dot">⚡</div>
+          <div class="node-label">API</div>
+          <div class="node-desc">最快</div>
+        </div>
+        <div class="node">
+          <div class="dot">⌨️</div>
+          <div class="node-label">CLI</div>
+          <div class="node-desc">快且人類可用</div>
+        </div>
+        <div class="node">
+          <div class="dot">🖥️</div>
+          <div class="node-label">GUI</div>
+          <div class="node-desc">好看好用</div>
+        </div>
+        <div class="node">
+          <div class="dot">🤖</div>
+          <div class="node-label">Browser Use</div>
+          <div class="node-desc">最慢但萬能</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MCP -->
+  <section id="mcp">
+    <div class="section-label">05</div>
+    <h2><code>MCP</code></h2>
+    <p class="section-subtitle">Model Context Protocol — 讓 AI 有一個標準化的方式使用外部工具</p>
+    <p>即使 Uber 有 API，AI 還是要先搜尋有沒有 API、翻文件、寫程式碼來呼叫。如果 Uber 推出 MCP Server，AI 就能從定義好的工具列表裡直接挑一個來用——快、準、不用猜。</p>
+    <p>聽起來很讚？但實際上有三個問題：</p>
+
+    <ul class="problems">
+      <li>
+        <span class="num">1</span>
+        <span><strong>被動等待</strong> — 要等官方或社群開發 MCP Server 你才能用。沒人做？那就沒得用。</span>
+      </li>
+      <li>
+        <span class="num">2</span>
+        <span><strong>生態碎片化</strong> — 很多 AI 工具沒有完全支援 MCP 協議（比如不支援 OAuth），導致裝了也用不了。</span>
+      </li>
+      <li>
+        <span class="num">3</span>
+        <span><strong>吃 Context</strong> — 所有工具的介紹、schema 都要塞進 system prompt。裝太多工具，AI 就什麼都做不了了，而且每次對話都更貴。</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="section-label">06</div>
+    <h2><code>Skills</code></h2>
+    <p class="section-subtitle">讓你的 AI「學會」技能 — MCP 三個問題的另一種解法</p>
+
+    <p>目前只有 Claude Code 有這個功能，但它的思路很值得看：</p>
+
+    <ul class="problems">
+      <li>
+        <span class="num fix">1</span>
+        <span><strong>不用等別人</strong> — 任何人都能自己寫一個 markdown 檔案，放進 skills 資料夾，AI 就學會了。你甚至可以用對話的方式「教」AI 研究某個 API 或 CLI，然後讓它把學到的經驗記錄成 skill。</span>
+      </li>
+      <li>
+        <span class="num fix">2</span>
+        <span><strong>不依賴生態</strong> — 不需要 Uber 官方出 MCP Server。只要有 API 或 CLI，AI 自己研究完就能用。</span>
+      </li>
+      <li>
+        <span class="num fix">3</span>
+        <span><strong>省 Context</strong> — 只把 skill 的名字和簡短描述放進 context，AI 覺得需要時才展開細節讀取。不會一開始就塞爆。</span>
+      </li>
+    </ul>
+
+    <div class="keypoint">
+      <strong>Uber 叫車 Skill 的誕生過程</strong><br><br>
+      你：「去研究一下 Uber 的 CLI，試試看能不能幫我叫車」<br>
+      AI：<em>（花 20 分鐘研究、踩坑、最終成功）</em><br>
+      你：「你剛剛學到了什麼？記下來。」<br>
+      AI：<em>（寫成 skill）</em><br><br>
+      下次你說「幫我叫車」→ 直接用上次成功的方法，秒完成。
+    </div>
+  </section>
+
+  <!-- TLDR -->
+  <div class="tldr">
+    <h3>📋 TL;DR</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>方式</th>
+          <th>速度</th>
+          <th>誰用</th>
+          <th>需要什麼</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>API</strong></td>
+          <td><span class="tag fast">極快</span></td>
+          <td>程式</td>
+          <td>官方開放 + 寫程式碼</td>
+        </tr>
+        <tr>
+          <td><strong>GUI</strong></td>
+          <td><span class="tag slow">慢</span></td>
+          <td>人類</td>
+          <td>打開網站 / App</td>
+        </tr>
+        <tr>
+          <td><strong>Browser Use</strong></td>
+          <td><span class="tag slow">很慢</span></td>
+          <td>AI</td>
+          <td>什麼都不用，但很貴</td>
+        </tr>
+        <tr>
+          <td><strong>CLI</strong></td>
+          <td><span class="tag fast">快</span></td>
+          <td>人類 / AI</td>
+          <td>安裝工具 + 輸入指令</td>
+        </tr>
+        <tr>
+          <td><strong>MCP</strong></td>
+          <td><span class="tag fast">快</span></td>
+          <td>AI</td>
+          <td>官方或社群開發 Server</td>
+        </tr>
+        <tr>
+          <td><strong>Skills</strong></td>
+          <td><span class="tag fast">快</span></td>
+          <td>AI</td>
+          <td>教一次就會了</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <p>原文由 <a href="https://twitter.com/tofuswang" target="_blank">Tofus Wang</a> 在京成 Skyliner 上寫成</p>
+    <p class="note">寵物龍蝦翻譯並整理 🦞</p>
+  </footer>
+</div>
+
+</body>
+</html>
