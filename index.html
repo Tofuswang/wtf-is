@@ -4,96 +4,225 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WTF is API, GUI, CLI, MCP, Skills?</title>
-<meta name="description" content="AI 時代你該知道的 6 個技術名詞，一張圖看懂。">
+<meta name="description" content="AI 時代你該知道的 6 個技術名詞——一篇文章看懂 API、GUI、Browser Use、CLI、MCP、Skills。">
 <meta property="og:title" content="WTF is API, GUI, CLI, MCP, Skills?">
-<meta property="og:description" content="AI 時代你該知道的 6 個技術名詞，一張圖看懂。">
+<meta property="og:description" content="AI 時代你該知道的 6 個技術名詞，一篇文章看懂。by yuanlin">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #09090b;
-  --surface: #18181b;
-  --surface2: #1f1f23;
-  --border: #27272a;
-  --text: #fafafa;
-  --text-dim: #71717a;
-  --orange: #f97316;
-  --green: #22c55e;
-  --red: #ef4444;
-  --blue: #3b82f6;
-  --purple: #a855f7;
-  --yellow: #eab308;
-  --cyan: #06b6d4;
-  --sans: 'Inter', -apple-system, system-ui, sans-serif;
+  --bg: #0a0610;
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-hover: rgba(255, 255, 255, 0.08);
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-strong: rgba(255, 255, 255, 0.10);
+  --text: #f5f0ff;
+  --text-secondary: rgba(245, 240, 255, 0.7);
+  --text-dim: rgba(245, 240, 255, 0.45);
+  --accent-1: #c084fc; /* purple */
+  --accent-2: #f472b6; /* pink-red */
+  --accent-3: #e879a0; /* vermillion-pink */
+  --gradient-main: linear-gradient(135deg, #7c3aed, #c084fc, #f472b6, #e11d48);
+  --gradient-subtle: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(244,114,182,0.15));
+  --gradient-card: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(244,114,182,0.05));
+  --glow-purple: rgba(168, 85, 247, 0.3);
+  --glow-pink: rgba(244, 114, 182, 0.3);
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-/* Header */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Ambient background blobs */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+body::before {
+  width: 600px; height: 600px;
+  top: -200px; left: -100px;
+  background: radial-gradient(circle, rgba(124,58,237,0.5), transparent 70%);
+}
+body::after {
+  width: 500px; height: 500px;
+  bottom: -100px; right: -100px;
+  background: radial-gradient(circle, rgba(225,29,72,0.4), transparent 70%);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== Header ===== */
 .header {
   text-align: center;
-  padding: 56px 24px 40px;
+  padding: 64px 24px 20px;
+  position: relative;
 }
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
 .header h1 {
-  font-size: clamp(28px, 5vw, 44px);
+  font-size: clamp(32px, 6vw, 56px);
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 1.1;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
-.header h1 span { color: var(--orange); }
-.header p {
-  color: var(--text-dim);
-  font-size: 15px;
-  max-width: 420px;
+.header h1 .gradient-text {
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header .subtitle {
+  color: var(--text-secondary);
+  font-size: 16px;
+  max-width: 520px;
   margin: 0 auto;
+  line-height: 1.7;
 }
 
-/* Grid */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  max-width: 960px;
-  margin: 0 auto 1px;
+.header .author {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.header .author a {
+  color: var(--accent-1);
+  text-decoration: none;
 }
 
-@media (max-width: 720px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 480px) {
-  .grid { grid-template-columns: 1fr; }
-}
-
-.card {
-  background: var(--surface);
-  padding: 28px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: background 0.15s;
-  cursor: default;
+/* ===== Context Banner ===== */
+.context-banner {
+  margin: 32px auto;
+  max-width: 800px;
+  padding: 24px 28px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   position: relative;
   overflow: hidden;
 }
+.context-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192,132,252,0.5), rgba(244,114,182,0.5), transparent);
+}
+.context-banner .context-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-1);
+  margin-bottom: 10px;
+  letter-spacing: 0.03em;
+}
+.context-banner p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
 
-.card:hover { background: var(--surface2); }
+/* ===== Card Grid ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 16px auto 20px;
+  max-width: 1080px;
+}
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+@media (max-width: 520px) {
+  .grid { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* ===== Glass Card ===== */
+.card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 28px 24px 24px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--card-accent, rgba(192,132,252,0.4)), transparent);
+}
+
+.card:hover {
+  background: var(--surface-hover);
+  border-color: rgba(255,255,255,0.18);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 60px var(--card-glow, rgba(168,85,247,0.08));
+}
 
 .card .icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 22px;
   flex-shrink: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .card h2 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
@@ -102,52 +231,101 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); -web
   font-size: 11px;
   color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-top: -6px;
+  letter-spacing: 0.06em;
+  margin-top: -8px;
 }
 
 .card .one-liner {
   font-size: 14px;
-  line-height: 1.6;
-  color: #d4d4d8;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.card .detail {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 12px;
+  margin-top: auto;
+}
+.card .detail strong {
+  color: var(--text-secondary);
 }
 
 .card .meta-row {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
-  margin-top: auto;
+  margin-top: 4px;
 }
 
 .tag {
   font-size: 11px;
   font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 4px;
+  padding: 4px 10px;
+  border-radius: 100px;
   letter-spacing: 0.02em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-.tag-speed-fast { background: rgba(34,197,94,0.12); color: var(--green); }
-.tag-speed-slow { background: rgba(239,68,68,0.12); color: var(--red); }
-.tag-speed-mid { background: rgba(234,179,8,0.12); color: var(--yellow); }
-.tag-user { background: rgba(59,130,246,0.12); color: var(--blue); }
-.tag-ai { background: rgba(168,85,247,0.12); color: var(--purple); }
+.tag-speed-fast { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.15); }
+.tag-speed-slow { background: rgba(244,114,182,0.12); color: #f9a8d4; border: 1px solid rgba(244,114,182,0.15); }
+.tag-speed-mid  { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.15); }
+.tag-user { background: rgba(96,165,250,0.12); color: #93c5fd; border: 1px solid rgba(96,165,250,0.15); }
+.tag-ai   { background: rgba(192,132,252,0.12); color: #d8b4fe; border: 1px solid rgba(192,132,252,0.15); }
 
-/* Colors */
-.card.api .icon { background: rgba(34,197,94,0.12); color: var(--green); }
-.card.gui .icon { background: rgba(59,130,246,0.12); color: var(--blue); }
-.card.browser .icon { background: rgba(239,68,68,0.12); color: var(--red); }
-.card.cli .icon { background: rgba(234,179,8,0.12); color: var(--yellow); }
-.card.mcp .icon { background: rgba(168,85,247,0.12); color: var(--purple); }
-.card.skills .icon { background: rgba(249,115,22,0.12); color: var(--orange); }
+/* Per-card accent colors */
+.card.api   { --card-accent: rgba(34,197,94,0.4); --card-glow: rgba(34,197,94,0.1); }
+.card.api   .icon { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.15); }
 
-/* Uber example banner */
-.uber-banner {
-  max-width: 960px;
-  margin: 0 auto;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+.card.gui   { --card-accent: rgba(96,165,250,0.4); --card-glow: rgba(96,165,250,0.1); }
+.card.gui   .icon { background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.15); }
+
+.card.browser { --card-accent: rgba(244,114,182,0.4); --card-glow: rgba(244,114,182,0.1); }
+.card.browser .icon { background: rgba(244,114,182,0.12); border: 1px solid rgba(244,114,182,0.15); }
+
+.card.cli   { --card-accent: rgba(251,191,36,0.4); --card-glow: rgba(251,191,36,0.1); }
+.card.cli   .icon { background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.15); }
+
+.card.mcp   { --card-accent: rgba(192,132,252,0.4); --card-glow: rgba(192,132,252,0.1); }
+.card.mcp   .icon { background: rgba(192,132,252,0.12); border: 1px solid rgba(192,132,252,0.15); }
+
+.card.skills { --card-accent: rgba(251,146,60,0.4); --card-glow: rgba(251,146,60,0.1); }
+.card.skills .icon { background: rgba(251,146,60,0.12); border: 1px solid rgba(251,146,60,0.15); }
+
+/* ===== Uber Speed Comparison ===== */
+.speed-section {
+  margin: 20px auto 20px;
+  max-width: 1080px;
+}
+
+.speed-title {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.speed-glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  overflow: hidden;
+  position: relative;
+}
+.speed-glass::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192,132,252,0.4), rgba(244,114,182,0.4), transparent);
 }
 
 .uber-row {
@@ -156,84 +334,191 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); -web
   gap: 0;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .uber-row { grid-template-columns: repeat(3, 1fr); }
 }
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .uber-row { grid-template-columns: repeat(2, 1fr); }
 }
 
 .uber-cell {
-  padding: 20px 16px;
+  padding: 24px 16px;
   text-align: center;
-  border-right: 1px solid var(--border);
+  border-right: 1px solid rgba(255,255,255,0.06);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  transition: background 0.2s;
 }
 .uber-cell:last-child { border-right: none; }
+.uber-cell:hover { background: rgba(255,255,255,0.03); }
 
 .uber-cell .u-label {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 .uber-cell .u-time {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
 }
 .uber-cell .u-desc {
   font-size: 11px;
   color: var(--text-dim);
 }
 
-/* Takeaway */
-.takeaway {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 40px 24px;
-  text-align: center;
+/* ===== Key Insights Section ===== */
+.insights {
+  margin: 20px auto;
+  max-width: 1080px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
 }
-.takeaway p {
+
+@media (max-width: 768px) {
+  .insights { grid-template-columns: 1fr; }
+}
+
+.insight-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  position: relative;
+  overflow: hidden;
+}
+.insight-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--insight-accent, rgba(192,132,252,0.3)), transparent);
+}
+
+.insight-card h3 {
   font-size: 15px;
-  color: var(--text-dim);
-  max-width: 560px;
-  margin: 0 auto 6px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.insight-card p {
+  font-size: 13px;
   line-height: 1.7;
+  color: var(--text-secondary);
 }
-.takeaway a {
-  color: var(--orange);
+
+.insight-card.mcp-issues { --insight-accent: rgba(192,132,252,0.4); }
+.insight-card.skills-wins { --insight-accent: rgba(251,146,60,0.4); }
+
+/* ===== Footer / CTA ===== */
+.footer {
+  text-align: center;
+  padding: 40px 24px 56px;
+  position: relative;
+}
+
+.footer-glass {
+  display: inline-block;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 32px 40px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  position: relative;
+  overflow: hidden;
+}
+.footer-glass::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192,132,252,0.4), rgba(244,114,182,0.4), transparent);
+}
+
+.footer p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+.footer p strong {
+  color: var(--text);
+}
+.footer a {
+  color: var(--accent-1);
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
 }
-.takeaway .byline {
+.footer a:hover {
+  color: var(--accent-2);
+}
+.footer .byline {
   font-size: 12px;
   color: var(--text-dim);
-  margin-top: 20px;
-  opacity: 0.5;
+  margin-top: 16px;
 }
+
+/* ===== Floating orb decorations ===== */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+  opacity: 0.25;
+}
+.orb-1 { width: 300px; height: 300px; top: 30%; right: -50px; background: rgba(192,132,252,0.5); }
+.orb-2 { width: 250px; height: 250px; bottom: 20%; left: -60px; background: rgba(225,29,72,0.4); }
+.orb-3 { width: 200px; height: 200px; top: 60%; left: 40%; background: rgba(124,58,237,0.3); }
 </style>
 </head>
 <body>
 
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="container">
+
+<!-- Header -->
 <div class="header">
-  <h1>你的 AI 怎麼<span>使用工具</span>？</h1>
-  <p>6 種方式，各有取捨。看完這頁你就懂了。</p>
+  <div class="header-badge">Skyliner 上寫的筆記 ✈️</div>
+  <h1>AI 時代的<br><span class="gradient-text">6 個關鍵技術名詞</span></h1>
+  <p class="subtitle">一篇文章看懂 API、GUI、Browser Use、CLI、MCP、Skills<br>—— 它們是什麼、怎麼比較、你的 AI 該用哪個？</p>
+  <p class="author">by <a href="https://zeabur.com">yuanlin</a> · Tofus Wang</p>
 </div>
 
-<!-- 6 cards -->
+<!-- Context Banner -->
+<div class="context-banner">
+  <div class="context-title">這篇文章適合誰？</div>
+  <p>
+    開始接觸 AI 工具，常看到「支援 API / CLI / MCP / Skills」卻不知道差別的人；有軟體產品想讓 n8n、Claude Code、OpenClaw 等工具高效使用的人；正在做自動化、Agent、內部工具，想搞懂不同整合方式各自適合什麼場景的人。
+  </p>
+</div>
+
+<!-- 6 Cards -->
 <div class="grid">
 
   <div class="card api">
     <div class="icon">⚡</div>
     <h2>API</h2>
     <div class="full-name">Application Programming Interface</div>
-    <div class="one-liner">讓程式直接呼叫另一個程式。最快，但要有人寫程式碼來用。</div>
+    <div class="one-liner">讓程式直接呼叫另一個程式的接口。最快的方式，但需要有人寫程式碼來呼叫。</div>
+    <div class="detail">
+      <strong>Uber 舉例：</strong>寫一行 Python 就能叫車，不用打開 App。搶票系統不開放 API，就是故意不讓你用程式化方式搶票。
+    </div>
     <div class="meta-row">
-      <span class="tag tag-speed-fast">極快</span>
+      <span class="tag tag-speed-fast">極快 ~3s</span>
       <span class="tag tag-user">給程式用</span>
     </div>
   </div>
@@ -243,8 +528,11 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); -web
     <h2>GUI</h2>
     <div class="full-name">Graphical User Interface</div>
     <div class="one-liner">包在 API 外面的好看畫面。人類點點按按就能用，但程式不好操控。</div>
+    <div class="detail">
+      <strong>本質：</strong>GUI 背後其實也是呼叫 API。所謂「不提供 API」其實是用手段讓你不容易用，且不公開文件。
+    </div>
     <div class="meta-row">
-      <span class="tag tag-speed-slow">慢</span>
+      <span class="tag tag-speed-slow">慢 ~3min</span>
       <span class="tag tag-user">給人用</span>
     </div>
   </div>
@@ -253,9 +541,12 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); -web
     <div class="icon">🤖</div>
     <h2>Browser Use</h2>
     <div class="full-name">AI 自己操作瀏覽器</div>
-    <div class="one-liner">沒有 API？讓 AI 直接操作 GUI。萬能，但很慢很貴。以前叫爬蟲。</div>
+    <div class="one-liner">沒有 API？讓 AI 直接操作 GUI。萬能但很慢很貴。十年前叫「爬蟲」，現在是 Agent 的基本能力。</div>
+    <div class="detail">
+      <strong>真實成本：</strong>打開網站 5s → 驗證 10s → 登入 30s → 切換頁面 5s → 輸入 15s → 按下按鈕 3s = 共 ~75s，與 API 的毫秒級差了一個數量級。
+    </div>
     <div class="meta-row">
-      <span class="tag tag-speed-slow">很慢</span>
+      <span class="tag tag-speed-slow">很慢 ~75s</span>
       <span class="tag tag-ai">給 AI 用</span>
     </div>
   </div>
@@ -264,9 +555,12 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); -web
     <div class="icon">⌨️</div>
     <h2>CLI</h2>
     <div class="full-name">Command Line Interface</div>
-    <div class="one-liner">用指令操作。比 GUI 快，比寫程式簡單。指令都是國小英文，LLM 最不容易出錯。</div>
+    <div class="one-liner">用指令操作，是 GUI 和 API 的中間值。比 GUI 快、比寫程式簡單，指令都是國小英文。</div>
+    <div class="detail">
+      <strong>AI 時代三大優勢：</strong>比 GUI 穩定（指令不會因改版壞掉）、比 Browser Use 快、比 API 更適合 LLM 使用且省 token。
+    </div>
     <div class="meta-row">
-      <span class="tag tag-speed-fast">快</span>
+      <span class="tag tag-speed-fast">快 ~5s</span>
       <span class="tag tag-user">給人用</span>
       <span class="tag tag-ai">AI 也行</span>
     </div>
@@ -276,9 +570,12 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); -web
     <div class="icon">🔌</div>
     <h2>MCP</h2>
     <div class="full-name">Model Context Protocol</div>
-    <div class="one-liner">統一的工具接口標準。AI 從工具清單選一個就能用。但要等人做、吃 context、生態碎片化。</div>
+    <div class="one-liner">統一的工具接口標準，讓 AI 從工具清單選一個就能用。但三大問題制約了它的發展。</div>
+    <div class="detail">
+      <strong>三大問題：</strong>要等官方或社群開發 Server、很多 AI 工具沒完全支援協議（如 OAuth）、所有工具 schema 載入 system prompt 吃光 context window。
+    </div>
     <div class="meta-row">
-      <span class="tag tag-speed-fast">快</span>
+      <span class="tag tag-speed-fast">快 ~5s</span>
       <span class="tag tag-ai">給 AI 用</span>
       <span class="tag tag-speed-mid">要等生態</span>
     </div>
@@ -289,8 +586,11 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); -web
     <h2>Skills</h2>
     <div class="full-name">AI 學會的技能</div>
     <div class="one-liner">教 AI 一次，它自己記住怎麼做。不用等官方、不吃 context、完全客製化。</div>
+    <div class="detail">
+      <strong>運作方式：</strong>讓 AI 花 20 分鐘研究某個 API/CLI，成功後記錄成 Skill（markdown 檔），下次直接用，只把名字放進 context，用到才展開細節。
+    </div>
     <div class="meta-row">
-      <span class="tag tag-speed-fast">快</span>
+      <span class="tag tag-speed-fast">快 ~5s</span>
       <span class="tag tag-ai">給 AI 用</span>
       <span class="tag tag-speed-fast">自給自足</span>
     </div>
@@ -298,47 +598,70 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); -web
 
 </div>
 
-<!-- Uber speed comparison -->
-<div class="uber-banner">
-  <div class="uber-row">
-    <div class="uber-cell">
-      <div class="u-label">API</div>
-      <div class="u-time" style="color:var(--green)">3s</div>
-      <div class="u-desc">一行程式碼</div>
-    </div>
-    <div class="uber-cell">
-      <div class="u-label">CLI</div>
-      <div class="u-time" style="color:var(--green)">5s</div>
-      <div class="u-desc">一行指令</div>
-    </div>
-    <div class="uber-cell">
-      <div class="u-label">MCP</div>
-      <div class="u-time" style="color:var(--green)">5s</div>
-      <div class="u-desc">AI 自動選工具</div>
-    </div>
-    <div class="uber-cell">
-      <div class="u-label">Skills</div>
-      <div class="u-time" style="color:var(--green)">5s</div>
-      <div class="u-desc">上次學過了</div>
-    </div>
-    <div class="uber-cell">
-      <div class="u-label">GUI</div>
-      <div class="u-time" style="color:var(--yellow)">3m</div>
-      <div class="u-desc">人類點點按按</div>
-    </div>
-    <div class="uber-cell">
-      <div class="u-label">Browser Use</div>
-      <div class="u-time" style="color:var(--red)">75s</div>
-      <div class="u-desc">AI 模擬人類</div>
+<!-- Uber Speed Comparison -->
+<div class="speed-section">
+  <div class="speed-title">同一件事 —— Uber 叫車，速度差多少？</div>
+  <div class="speed-glass">
+    <div class="uber-row">
+      <div class="uber-cell">
+        <div class="u-label">API</div>
+        <div class="u-time" style="color:#4ade80">3s</div>
+        <div class="u-desc">一行程式碼</div>
+      </div>
+      <div class="uber-cell">
+        <div class="u-label">CLI</div>
+        <div class="u-time" style="color:#4ade80">5s</div>
+        <div class="u-desc">一行指令</div>
+      </div>
+      <div class="uber-cell">
+        <div class="u-label">MCP</div>
+        <div class="u-time" style="color:#4ade80">5s</div>
+        <div class="u-desc">AI 自動選工具</div>
+      </div>
+      <div class="uber-cell">
+        <div class="u-label">Skills</div>
+        <div class="u-time" style="color:#4ade80">5s</div>
+        <div class="u-desc">上次學過了</div>
+      </div>
+      <div class="uber-cell">
+        <div class="u-label">Browser Use</div>
+        <div class="u-time" style="color:#fbbf24">75s</div>
+        <div class="u-desc">AI 模擬人類</div>
+      </div>
+      <div class="uber-cell">
+        <div class="u-label">GUI</div>
+        <div class="u-time" style="color:#f9a8d4">3m+</div>
+        <div class="u-desc">人類點點按按</div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="takeaway">
-  <p><strong>同一件事——Uber 叫車。</strong>差別只在你的軟體讓 AI 用哪種方式操作。</p>
-  <p>想知道你的產品該怎麼讓 AI 用？<a href="https://zeabur.com" target="_blank">找 Zeabur 聊聊 →</a></p>
-  <div class="byline">by Tofus Wang · 2026</div>
+<!-- Key Insights -->
+<div class="insights">
+  <div class="insight-card mcp-issues">
+    <h3>MCP 的現實挑戰</h3>
+    <p>
+      生態取決於多少開發者願意投入；許多平台沒完全支援協議（如 OAuth 授權流程）；所有工具的 schema 必須載入 system prompt，嚴重佔用 context window，裝太多 MCP 工具反而讓 AI 只剩使用工具的能力，而且每次對話成本更高。
+    </p>
+  </div>
+  <div class="insight-card skills-wins">
+    <h3>Skills 的巧妙設計</h3>
+    <p>
+      任何人都能自己客製化，不用等官方。用對話方式「教」AI 學會新技能，研究成功後記錄成 markdown 檔。只把 Skill 的名字和描述放入 context，需要時才展開細節，大幅節省 token。未來甚至可以用向量搜尋等方式進一步優化。
+    </p>
+  </div>
 </div>
 
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-glass">
+    <p><strong>同一件事 —— Uber 叫車。</strong>差別只在你的軟體讓 AI 用哪種方式操作。</p>
+    <p>想知道你的產品該怎麼讓 AI 用？<a href="https://zeabur.com" target="_blank">找 Zeabur 聊聊 →</a></p>
+    <div class="byline">by yuanlin · Tofus Wang · 寫於去成田機場的 Skyliner 上</div>
+  </div>
+</div>
+
+</div>
 </body>
 </html>
